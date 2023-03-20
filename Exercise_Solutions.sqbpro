@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/neg19/Downloads/kadb.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="14498"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,9:mainBooktable"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Booktable" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="151"/><column index="2" value="51"/><column index="3" value="76"/><column index="4" value="97"/><column index="5" value="43"/><column index="6" value="43"/><column index="7" value="43"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 3">select * from indian_startup_funding;
+
+/* Write SQL query to sum all the funding AmountinUSD, where City location equals “Bengaluru” */
+select CityLocation, sum(AmountinUSD) as &quot;Total_Fund&quot; from indian_startup_funding where CityLocation=&quot;Bengaluru&quot;;
+
+/* 2. Write SQL query to sort the table by startup name DESC */
+select * from indian_startup_funding order by StartupName desc;
+
+/* 3. Write SQL query to sum all the funding AmountinUSD, where City location equals “Bengaluru” 
+and AmountinUSD&gt;380000 */
+select CityLocation, sum(AmountinUSD) from indian_startup_funding where CityLocation=&quot;Bengaluru&quot;;
+
+/* 5. Write SQL query to get only unique CityLocations that has an AmountinUSD &gt;380000 */
+select distinct(CityLocation), AmountinUSD from indian_startup_funding where AmountinUSD&gt;&quot;380000&quot;;
+
+/* 6. Write SQL query to get all StartupNames where AmountinUSD&lt;380000 */
+select StartupName, AmountinUSD from indian_startup_funding where AmountinUSD&lt;&quot;380000&quot;;
+
+/* 7. Write SQL query to sort the output from the previous question DESC */
+select StartupName, AmountinUSD from indian_startup_funding where AmountinUSD&lt;&quot;380000&quot;
+order by StartupName desc;
+
+/* 8. Write SQL query to get the City location that has the maximum funding amount 
+“Note that is the data is not cleaned properly you will get non logical result” */
+select CityLocation, AmountinUSD from indian_startup_funding
+where AmountinUSD=(select max(AmountinUSD) from indian_startup_funding
+where lower(AmountinUSD) not in (&quot;undisclosed&quot;,&quot;unknown&quot;));
+
+/* 9. Write SQL query to get the total funding AmountinUSD for each IndustryVertical */
+select IndustryVertical, sum(AmountinUSD) as &quot;Total&quot; from indian_startup_funding
+where lower(AmountinUSD) not in (&quot;undisclosed&quot;,&quot;unknown&quot;)
+group by IndustryVertical;
+
+/* 10. Write SQL query to get the total funding AmountinUSD for each IndustryVertical that starts with letter “A” */
+select IndustryVertical, sum(AmountinUSD) as &quot;Total&quot; from indian_startup_funding
+where lower(AmountinUSD) not in (&quot;undisclosed&quot;,&quot;unknown&quot;)
+group by IndustryVertical
+having IndustryVertical like &quot;A%&quot;;
+
+/* 11. Write SQL query to get the total funding AmountinUSD for each IndustryVertical that starts with letter “A” 
+and sort the output DESC by the total AmountinUSD */
+select IndustryVertical, sum(AmountinUSD) as &quot;Total&quot; from indian_startup_funding
+where lower(AmountinUSD) not in (&quot;undisclosed&quot;,&quot;unknown&quot;)
+group by IndustryVertical
+having IndustryVertical like &quot;A%&quot;
+order by Total desc;
+
+/* 12. Write SQL query to count all the start_ups in the Education field */
+select count(StartupName) from indian_startup_funding where lower(IndustryVertical)=lower(&quot;Education&quot;);
+
+/* 13. Write SQL query to count all the start_Ups in the E-Commerce field */
+select count(StartupName) from indian_startup_funding where lower(IndustryVertical)=lower(&quot;E-Commerce&quot;);
+
+/* 14. Write SQL query to count all the start_Ups in the E-Commerce field, where city location equals “Bengaluru” */
+select count(StartupName) from indian_startup_funding 
+where lower(IndustryVertical)=lower(&quot;E-Commerce&quot;)
+and CityLocation=&quot;Bengaluru&quot;;
+
+/* 15. For each Industry Vertical find the total funding amount */
+select IndustryVertical, sum(AmountinUSD) as &quot;Total_Fund&quot; from indian_startup_funding
+group by IndustryVertical;
+
+/* 16. For each Industry Vertical find the total funding amount as “Total_fund” and the average funding amount
+as “Avg_Fund”. In this question provide two answer 1- using group by Industry Vertical, 2- using sub_queries */
+--1
+select IndustryVertical, sum(AmountinUSD) as &quot;Total_Fund&quot;, avg(AmountinUSD) as &quot;Avg_Fund&quot; 
+from indian_startup_funding
+group by IndustryVertical;
+-- 2
+select IndustryVertical, AmountinUSD,
+(select sum(AmountinUSD) from indian_startup_funding) as &quot;Total_Funds&quot;,
+(select avg(AmountinUSD) from indian_startup_funding) as &quot;Avg_Funds&quot;
+from indian_startup_funding;
+
+/* 17. Write SQL query to get the minimum value of funding for the “Uniphore” start_up */
+select StartupName, min(AmountinUSD) from indian_startup_funding
+where lower(StartupName)=lower(&quot;Uniphore&quot;);
+
+/* 18. Write SQL query to get the length of the city location names */
+select distinct(CityLocation), length(CityLocation) from indian_startup_funding;
+
+/* 19. Write SQL query to convert start_ups names into uppercase if the funding amount is &gt;380,000 */
+select upper(StartupName), AmountinUSD from indian_startup_funding
+where AmountinUSD&gt;&quot;380000&quot;;
+
+/* 20. Write SQL query to select distinct industry vertical names, 
+knowing that names are mix of lowercase and uppercase values. */
+select distinct(upper(IndustryVertical)) from indian_startup_funding
+order by IndustryVertical;
+</sql><sql name="SQL 1">select * from ChicagoCrimeData;
+select * from ChicagoCensusData;
+select * from ChicagoPublicSchools;
+
+/* Problem 1: Find the total number of crimes recorded in the CRIME table. */
+select count(*) as &quot;Total # of Crimes&quot; from ChicagoCrimeData;
+
+/* Problem 2: List community areas with per capita income less than 11000. */
+select COMMUNITY_AREA_Name, PER_CAPITA_INCOME from ChicagoCensusData
+where PER_CAPITA_INCOME&lt;&quot;11000&quot;;
+
+/* Problem 3: List all case numbers for crimes involving minors? */
+select * from ChicagoCrimeData 
+where DESCRIPTION like &quot;%minor%&quot;
+or DESCRIPTION like &quot;%child%&quot;
+or DESCRIPTION like &quot;%kid%&quot;
+or DESCRIPTION like &quot;%infant%&quot;;
+
+/* Problem 4: List all kidnapping crimes involving a child?(children are not considered minors
+for the purposes of crime analysis) */
+select * from ChicagoCrimeData
+where lower(PRIMARY_TYPE)=&quot;kidnapping&quot;
+and DESCRIPTION like &quot;%child%&quot;;
+
+/* Problem 5: What kind of crimes were recorded at schools? */
+select PRIMARY_TYPE, DESCRIPTION, LOCATION_DESCRIPTION from ChicagoCrimeData
+where LOCATION_DESCRIPTION like &quot;%school%&quot;;
+
+/* Problem 6: List the average safety score for all types of schools. */
+select ElementaryMiddleorHighSchool as &quot;School Type&quot;, avg(SAFETY_SCORE) as &quot;Average Safety Score&quot; 
+from ChicagoPublicSchools
+group by ElementaryMiddleorHighSchool;
+
+/* Problem 7: List 5 community areas with highest % of households below poverty line. */
+select COMMUNITY_AREA_NAME, PERCENT_HOUSEHOLDS_BELOW_POVERTY from ChicagoCensusData
+order by PERCENT_HOUSEHOLDS_BELOW_POVERTY desc
+limit 5;
+
+/* Problem 8: Which community area(number) is most crime prone? */
+select C.COMMUNITY_AREA_NUMBER, COMMUNITY_AREA_NAME, count(CCD.COMMUNITY_AREA_NUMBER) as &quot;Frequency&quot;
+from ChicagoCensusData as C, ChicagoCrimeData as CCD
+where C.COMMUNITY_AREA_NUMBER=CCD.COMMUNITY_AREA_NUMBER
+group by CCD.COMMUNITY_AREA_NUMBER
+order by &quot;Frequency&quot; desc 
+limit 1;
+
+/* Problem 9: Use a sub-query to find the name of the community area with highest hardship
+index. */
+select COMMUNITY_AREA_NAME from ChicagoCensusData
+where HARDSHIP_INDEX=(select max(HARDSHIP_INDEX) from ChicagoCensusData);
+
+/* Problem 10: Use a sub-query to determine the Community Area Name with most number
+of crimes? */
+select COMMUNITY_AREA_NAME from ChicagoCensusData
+where COMMUNITY_AREA_NUMBER=(select CCD.COMMUNITY_AREA_NUMBER from ChicagoCrimeData as CCD
+	group by CCD.COMMUNITY_AREA_NUMBER
+	order by count(CCD.COMMUNITY_AREA_NUMBER) desc)
+limit 1;
+
+/* Problem 11: How many Elementary Schools are in the dataset? */
+select count(*) as &quot;# of Elementary Schools&quot; from ChicagoPublicSchools
+where ElementaryMiddleorHighSchool=&quot;ES&quot;;
+
+/* Problem 12: Display total number of elementary, middle and high school
+from Chicago_public_Schools */
+select ElementaryMiddleorHighSchool, count(*) as &quot;Type of School Total&quot; from ChicagoPublicSchools
+group by ElementaryMiddleorHighSchool;
+
+/* Problem 13: What is the highest Safety Score? #Which schools have highest Safety Score? */
+select NAME_OF_SCHOOL, SAFETY_SCORE from ChicagoPublicSchools
+where SAFETY_SCORE=(select max(SAFETY_SCORE) from ChicagoPublicSchools);
+
+/* Problem 14: Remove the '%' sign for Average Student Attendance column. */
+select NAME_OF_SCHOOL, replace(AVERAGE_STUDENT_ATTENDANCE,&quot;%&quot;,&quot;&quot;) as &quot;Average Student Attendance&quot;
+from ChicagoPublicSchools
+where &quot;Average Student Attendance&quot; is not NULL
+order by &quot;Average Student Attendance&quot;;
+
+/* Problem 15: Which Schools have Average Student Attendance lower than 70%? */
+select NAME_OF_SCHOOL, AVERAGE_STUDENT_ATTENDANCE from ChicagoPublicSchools
+where AVERAGE_STUDENT_ATTENDANCE&lt;&quot;70%&quot;
+order by AVERAGE_STUDENT_ATTENDANCE;
+
+/* Problem 16: Get the total College Enrollment for each Community Area. */
+select COMMUNITY_AREA_NAME, sum(COLLEGE_ENROLLMENT) as &quot;College Enrollment&quot; from ChicagoPublicSchools
+group by COMMUNITY_AREA_NAME;
+
+/* Problem 17: Get the 5 Community Areas with the least College Enrollment sorted in
+ascending order */
+select COMMUNITY_AREA_NAME, sum(COLLEGE_ENROLLMENT) as &quot;College Enrollment&quot; from ChicagoPublicSchools
+group by COMMUNITY_AREA_NAME
+order by &quot;College Enrollment&quot;
+limit 5;
+
+/* Problem 18: Display total number of elementary, middle and high school from
+Chicago_public_Schools */
+select ElementaryMiddleorHighSchool as &quot;School Type&quot;, count(ElementaryMiddleorHighSchool) as &quot;# of School Type&quot;
+from ChicagoPublicSchools
+group by ElementaryMiddleorHighSchool;
+ 
+/* Problem 19: Display ZIPCodes from Chicago_Schools which are having more than 5
+schools. */
+select ZIP_Code, count(*) as &quot;Count&quot; from ChicagoPublicSchools
+group by ZIP_Code
+having count(*)&gt;5
+order by &quot;Count&quot; desc;
+
+/* Problem 20: Get the hardship index for the community area which has the school with the
+highest enrollment */
+select C.COMMUNITY_AREA_NAME, NAME_OF_SCHOOL, COLLEGE_ENROLLMENT, HARDSHIP_INDEX from ChicagoCensusData as C, ChicagoPublicSchools as CPS
+where C.COMMUNITY_AREA_NUMBER = CPS.COMMUNITY_AREA_NUMBER
+and CPS.COLLEGE_ENROLLMENT = (select max(COLLEGE_ENROLLMENT) from ChicagoPublicSchools);
+
+/* Problem 21: Display the type of crimes with less than 10 reported crimes for each category. */
+select PRIMARY_TYPE, count(*) as &quot;Count&quot; from ChicagoCrimeData
+group by PRIMARY_TYPE
+having &quot;Count&quot;&lt;10;
+
+/* Problem 22 : Display the top 20 least reported types of crime. (Primary_type column) */
+select PRIMARY_TYPE, count(*) as &quot;Count&quot; from ChicagoCrimeData
+group by PRIMARY_TYPE
+order by &quot;Count&quot;
+limit 20;</sql><current_tab id="1"/></tab_sql></sqlb_project>
